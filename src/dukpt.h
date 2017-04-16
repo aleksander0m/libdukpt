@@ -1,0 +1,248 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/*
+ * libdukpt - Credit card data encryption and decryption with DUKPT
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA.
+ *
+ * Copyright (C) 2017 Zodiac Inflight Innovations
+ * Copyright (C) 2017 Aleksander Morgado <aleksander@aleksander.es>
+ */
+
+#ifndef DUKPT_H
+#define DUKPT_H
+
+#include <stdint.h>
+
+/**
+ * SECTION:libdukpt-keys
+ * @title: Key management
+ * @short_description: Methods and types to perform key management.
+ *
+ * This section defines the types and methods required to perform key
+ * generations based on DUKPT.
+ */
+
+/**
+ * dukpt_ksn_t:
+ *
+ * The Key Serial Number, an 80-bit field that is formed from the device
+ * unique identifier and a transaction counter.
+ */
+typedef uint8_t dukpt_ksn_t [10];
+
+/**
+ * dukpt_key_t:
+ *
+ * A 16-byte key.
+ */
+typedef uint8_t dukpt_key_t [16];
+
+/**
+ * DUKPT_KSN_SIZE:
+ *
+ * The size of a #dukpt_ksn_t (10 bytes).
+ */
+#define DUKPT_KSN_SIZE sizeof (dukpt_ksn_t)
+
+/**
+ * DUKPT_KEY_SIZE:
+ *
+ * The size of a #dukpt_key_t (16 bytes).
+ */
+#define DUKPT_KEY_SIZE sizeof (dukpt_key_t)
+
+/**
+ * dukpt_compute_ipek:
+ * @bdk: location of a #dukpt_key_t with the Base Derivation Key.
+ * @ksn: location of a #dukpt_ksn_t with the Key Serial Number.
+ * @out_ipek: output location of a #dukpt_key_t where to store the generated IPEK.
+ *
+ * Computes the device-specific IPEK (Initial Pin Encryption Key) from a given
+ * @bdk and serial number (as given in the @ksn).
+ *
+ * The 21 bits for the counter in @ksn are ignored when computing the IPEK.
+ *
+ * <example>
+ * <title>Generate IPEK</title>
+ * <programlisting>
+ *  static const dukpt_ksn_t ksn = {
+ *      0x62, 0x99, 0x49, 0x00, 0x00,
+ *      0x00, 0x00, 0x00, 0x00, 0x01
+ *  };
+ *  static const dukpt_key_t bdk = {
+ *      0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
+ *      0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10
+ *  };
+ *  static const dukpt_key_t expected_ipek = {
+ *      0xb5, 0x61, 0x06, 0x50, 0xeb, 0xc2, 0x4c, 0xa3,
+ *      0xca, 0xcd, 0xd0, 0x8d, 0xda, 0xfe, 0x8c, 0xe3
+ *  };
+ *  dukpt_key_t ipek;
+ *
+ *  dukpt_compute_ipek (&bdk, &ksn, &ipek);
+ *
+ *  if (memcmp (ipek, expected_ipek, DUKPT_KEY_SIZE) == 0) {
+ *      printf ("Correct IPEK generated\n");
+ *  }
+ * </programlisting></example>
+ */
+void dukpt_compute_ipek (const dukpt_key_t *bdk,
+                         const dukpt_ksn_t *ksn,
+                         dukpt_key_t       *out_ipek);
+
+/**
+ * dukpt_key_type_t:
+ * @DUKPT_KEY_TYPE_DERIVED: Base derived key.
+ * @DUKPT_KEY_TYPE_PIN_ENCRYPTION: PIN encryption variant derived key.
+ * @DUKPT_KEY_TYPE_MAC_REQUEST: MAC request variant derived key.
+ * @DUKPT_KEY_TYPE_MAC_RESPONSE: MAC response variant derived key.
+ * @DUKPT_KEY_TYPE_DATA_REQUEST: Data request variant derived key.
+ * @DUKPT_KEY_TYPE_DATA_RESPONSE: Data response variant derived key.
+ *
+ * The type of key that may be derived from a given IPEK and KSN for a specific
+ * device transaction.
+ *
+ * The @DUKPT_KEY_TYPE_DERIVED value is really given for completeness, it
+ * shouldn't have any real world use case.
+ */
+typedef enum {
+    DUKPT_KEY_TYPE_DERIVED,
+    DUKPT_KEY_TYPE_PIN_ENCRYPTION,
+    DUKPT_KEY_TYPE_MAC_REQUEST,
+    DUKPT_KEY_TYPE_MAC_RESPONSE,
+    DUKPT_KEY_TYPE_DATA_REQUEST,
+    DUKPT_KEY_TYPE_DATA_RESPONSE,
+} dukpt_key_type_t;
+
+/**
+ * dukpt_compute_key:
+ * @ipek: location of a #dukpt_key_t specifying the device-specific IPEK.
+ * @ksn: location of a #dukpt_ksn_t specifying the KSN for the specific transaction.
+ * @type: the #dukpt_key_type_t to generate.
+ * @out_key: output location of a #dukpt_key_t where to store the generated key.
+ *
+ * Computes a derived transaction key from a given device-specific @ipek and
+ * transaction-specific @ksn.
+ *
+ * <example>
+ * <title>Generate PIN key</title>
+ * <programlisting>
+ *  static const dukpt_ksn_t ksn = {
+ *      0x62, 0x99, 0x49, 0x01, 0x2c,
+ *      0x00, 0x00, 0x00, 0x00, 0x03
+ *  };
+ *  static const dukpt_key_t ipek = {
+ *      0xd2, 0x94, 0x3c, 0xcf, 0x80, 0xf4, 0x2e, 0x88,
+ *      0xe2, 0x3c, 0x12, 0xd1, 0x16, 0x2f, 0xd5, 0x47
+ *  };
+ *  static const dukpt_key_t expected_key = {
+ *      0x84, 0x1a, 0xb7, 0xb9, 0x4e, 0xd0, 0x86, 0x14,
+ *      0xc2, 0xb8, 0xa8, 0x38, 0x5d, 0xa7, 0xdf, 0x35
+ *  };
+ *  dukpt_key_t key;
+ *
+ *  dukpt_compute_key (&ipek, &ksn, DUKPT_KEY_TYPE_PIN_ENCRYPTION, &key);
+ *
+ *  if (memcmp (key, expected_key, DUKPT_KEY_SIZE) == 0) {
+ *      printf ("Correct PIN key generated\n");
+ *  }
+ * </programlisting></example>
+ */
+void dukpt_compute_key (const dukpt_key_t *ipek,
+                        const dukpt_ksn_t *ksn,
+                        dukpt_key_type_t   type,
+                        dukpt_key_t       *out_key);
+
+/**
+ * SECTION:libdukpt-encdec
+ * @title: Encryption and decryption
+ * @short_description: Methods to perform encryption and decryption.
+ *
+ * This section defines the methods required to perform encryption and
+ * decryption using DUKPT.
+ */
+
+/**
+ * dukpt_encrypt:
+ * @key: a #dukpt_key_t.
+ * @data: location of the input data to encrypt.
+ * @data_size: size of @data.
+ * @out: output location where to store the encrypted data.
+ * @out_size: size of @out.
+ *
+ * Encrypt @data using @key and store it in @out.
+ *
+ * The size of the output encrypted data will be the same as the input one, and
+ * therefore @out_size must be at least the same size as @data_size.
+ *
+ * <example>
+ * <title>Encrypt and decrypt text using the PIN key</title>
+ * <programlisting>
+ *  static const dukpt_ksn_t ksn = {
+ *      0x62, 0x99, 0x49, 0x01, 0x2c,
+ *      0x00, 0x00, 0x00, 0x00, 0x03
+ *  };
+ *  static const dukpt_key_t ipek = {
+ *      0xd2, 0x94, 0x3c, 0xcf, 0x80, 0xf4, 0x2e, 0x88,
+ *      0xe2, 0x3c, 0x12, 0xd1, 0x16, 0x2f, 0xd5, 0x47
+ *  };
+ *  static const char *input = "Hello World"
+ *
+ *  size_t data_size;
+ *  dukpt_key_t key;
+ *  char encrypted[256];
+ *  char decrypted[256];
+ *
+ *  data_size = strlen (input);
+ *
+ *  dukpt_compute_key (&ipek, &ksn, DUKPT_KEY_TYPE_PIN_ENCRYPTION, &key);
+ *  dukpt_encrypt (&key, (const uint8_t *) input, data_size, (uint8_t *) encrypted_text, sizeof (encrypted));
+ *  dukpt_decrypt (&key, (const uint8_t *) encrypted, data_size, (uint8_t *) decrypted, sizeof (decrypted));
+ *
+ *  if (memcmp (input, decrypted, data_size) == 0) {
+ *      printf ("Correct encryption/decryption process\n");
+ *  }
+ * </programlisting></example>
+ */
+void dukpt_encrypt (const dukpt_key_t *key,
+                    const uint8_t     *data,
+                    size_t             data_size,
+                    uint8_t           *out,
+                    size_t             out_size);
+
+/**
+ * dukpt_decrypt:
+ * @key: a #dukpt_key_t.
+ * @data: location of the input data to decrypt.
+ * @data_size: size of @data.
+ * @out: output location where to store the decrypted data.
+ * @out_size: size of @out.
+ *
+ * Decrypt @data using @key and store it in @out.
+ *
+ * The size of the output decrypted data will be the same as the input
+ * encrypted one, and therefore @out_size must be at least the same size as
+ * @data_size.
+ *
+ * See dukpt_encrypt() for an example on how to use this method.
+ */
+void dukpt_decrypt (const dukpt_key_t *key,
+                    const uint8_t     *data,
+                    size_t             data_size,
+                    uint8_t           *out,
+                    size_t             out_size);
+
+#endif /* DUKPT_H */
