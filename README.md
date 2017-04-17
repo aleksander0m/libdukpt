@@ -1,5 +1,5 @@
 
-# libduktp
+# libdukpt
 
 libdukpt is a small **[C library](https://aleksander0m.github.io/libdukpt/)**
 that allows performing *key generation* as well as *encryption and decryption*
