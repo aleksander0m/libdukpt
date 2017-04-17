@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<book xmlns="http://www.devhelp.net/book" title="libdukpt Reference Manual" link="index.html" author="" name="libdukpt" version="2" language="c">
+  <chapters>
+    <sub name="libdukpt" link="pt01.html">
+      <sub name="Key management" link="libdukpt-Key-management.html"/>
+      <sub name="Encryption and decryption" link="libdukpt-Encryption-and-decryption.html"/>
+    </sub>
+    <sub name="API Index" link="ix01.html"/>
+  </chapters>
+  <functions>
+    <keyword type="function" name="dukpt_compute_ipek ()" link="libdukpt-Key-management.html#dukpt-compute-ipek"/>
+    <keyword type="function" name="dukpt_compute_key ()" link="libdukpt-Key-management.html#dukpt-compute-key"/>
+    <keyword type="typedef" name="dukpt_ksn_t" link="libdukpt-Key-management.html#dukpt-ksn-t"/>
+    <keyword type="macro" name="DUKPT_KSN_SIZE" link="libdukpt-Key-management.html#DUKPT-KSN-SIZE:CAPS"/>
+    <keyword type="typedef" name="dukpt_key_t" link="libdukpt-Key-management.html#dukpt-key-t"/>
+    <keyword type="macro" name="DUKPT_KEY_SIZE" link="libdukpt-Key-management.html#DUKPT-KEY-SIZE:CAPS"/>
+    <keyword type="enum" name="enum dukpt_key_type_t" link="libdukpt-Key-management.html#dukpt-key-type-t"/>
+    <keyword type="function" name="dukpt_encrypt ()" link="libdukpt-Encryption-and-decryption.html#dukpt-encrypt"/>
+    <keyword type="function" name="dukpt_decrypt ()" link="libdukpt-Encryption-and-decryption.html#dukpt-decrypt"/>
+    <keyword type="constant" name="DUKPT_KEY_TYPE_DERIVED" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-DERIVED:CAPS"/>
+    <keyword type="constant" name="DUKPT_KEY_TYPE_PIN_ENCRYPTION" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-PIN-ENCRYPTION:CAPS"/>
+    <keyword type="constant" name="DUKPT_KEY_TYPE_MAC_REQUEST" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-MAC-REQUEST:CAPS"/>
+    <keyword type="constant" name="DUKPT_KEY_TYPE_MAC_RESPONSE" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-MAC-RESPONSE:CAPS"/>
+    <keyword type="constant" name="DUKPT_KEY_TYPE_DATA_REQUEST" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-DATA-REQUEST:CAPS"/>
+    <keyword type="constant" name="DUKPT_KEY_TYPE_DATA_RESPONSE" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-DATA-RESPONSE:CAPS"/>
+  </functions>
+</book>

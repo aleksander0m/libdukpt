@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Encryption and decryption: libdukpt Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="libdukpt Reference Manual">
+<link rel="up" href="pt01.html" title="Part I. libdukpt">
+<link rel="prev" href="libdukpt-Key-management.html" title="Key management">
+<link rel="next" href="ix01.html" title="API Index">
+<meta name="generator" content="GTK-Doc V1.25.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#libdukpt-Encryption-and-decryption.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="pt01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libdukpt-Key-management.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ix01.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="libdukpt-Encryption-and-decryption"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libdukpt-Encryption-and-decryption.top_of_page"></a>Encryption and decryption</span></h2>
+<p>Encryption and decryption — Methods to perform encryption and decryption.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="libdukpt-Encryption-and-decryption.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="libdukpt-Encryption-and-decryption.html#dukpt-encrypt" title="dukpt_encrypt ()">dukpt_encrypt</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="libdukpt-Encryption-and-decryption.html#dukpt-decrypt" title="dukpt_decrypt ()">dukpt_decrypt</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="libdukpt-Encryption-and-decryption.description"></a><h2>Description</h2>
+<p>This section defines the methods required to perform encryption and
+decryption using DUKPT.</p>
+</div>
+<div class="refsect1">
+<a name="libdukpt-Encryption-and-decryption.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="dukpt-encrypt"></a><h3>dukpt_encrypt ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+dukpt_encrypt (<em class="parameter"><code>const <a class="link" href="libdukpt-Key-management.html#dukpt-key-t" title="dukpt_key_t"><span class="type">dukpt_key_t</span></a> *key</code></em>,
+               <em class="parameter"><code>const <span class="type">uint8_t</span> *data</code></em>,
+               <em class="parameter"><code><span class="type">size_t</span> data_size</code></em>,
+               <em class="parameter"><code><span class="type">uint8_t</span> *out</code></em>,
+               <em class="parameter"><code><span class="type">size_t</span> out_size</code></em>);</pre>
+<p>Encrypt <em class="parameter"><code>data</code></em>
+ using <em class="parameter"><code>key</code></em>
+ and store it in <em class="parameter"><code>out</code></em>
+.</p>
+<p>The size of the output encrypted data will be the same as the input one, and
+therefore <em class="parameter"><code>out_size</code></em>
+ must be at least the same size as <em class="parameter"><code>data_size</code></em>
+.</p>
+<div class="example">
+<a name="id-1.2.3.5.2.6"></a><p class="title"><b>Example 3. Encrypt and decrypt text using the PIN key</b></p>
+<div class="example-contents">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">dukpt_ksn_t</span><span class="normal"> ksn </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">    </span><span class="number">0x62</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x99</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x49</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x01</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x2c</span><span class="symbol">,</span>
+<span class="normal">    </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x03</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">dukpt_key_t</span><span class="normal"> ipek </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">    </span><span class="number">0xd2</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x94</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x3c</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xcf</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x80</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xf4</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x2e</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x88</span><span class="symbol">,</span>
+<span class="normal">    </span><span class="number">0xe2</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x3c</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x12</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xd1</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x16</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x2f</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xd5</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x47</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="type">char</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">input </span><span class="symbol">=</span><span class="normal"> </span><span class="string">"Hello World"</span>
+
+<span class="usertype">size_t</span><span class="normal"> data_size</span><span class="symbol">;</span>
+<span class="usertype">dukpt_key_t</span><span class="normal"> key</span><span class="symbol">;</span>
+<span class="type">char</span><span class="normal"> encrypted</span><span class="symbol">[</span><span class="number">256</span><span class="symbol">];</span>
+<span class="type">char</span><span class="normal"> decrypted</span><span class="symbol">[</span><span class="number">256</span><span class="symbol">];</span>
+
+<span class="normal">data_size </span><span class="symbol">=</span><span class="normal"> </span><span class="function">strlen</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">input</span><span class="symbol">);</span>
+
+<span class="function"><a href="libdukpt-Key-management.html#dukpt-compute-key">dukpt_compute_key</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">ipek</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">&amp;</span><span class="normal">ksn</span><span class="symbol">,</span><span class="normal"> <a href="libdukpt-Key-management.html#DUKPT-KEY-TYPE-PIN-ENCRYPTION:CAPS">DUKPT_KEY_TYPE_PIN_ENCRYPTION</a></span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">&amp;</span><span class="normal">key</span><span class="symbol">);</span>
+<span class="function"><a href="libdukpt-Encryption-and-decryption.html#dukpt-encrypt">dukpt_encrypt</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">key</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">(</span><span class="keyword">const</span><span class="normal"> uint8_t </span><span class="symbol">*)</span><span class="normal"> input</span><span class="symbol">,</span><span class="normal"> data_size</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">uint8_t </span><span class="symbol">*)</span><span class="normal"> encrypted_text</span><span class="symbol">,</span><span class="normal"> </span><span class="keyword">sizeof</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">encrypted</span><span class="symbol">));</span>
+<span class="function"><a href="libdukpt-Encryption-and-decryption.html#dukpt-decrypt">dukpt_decrypt</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">key</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">(</span><span class="keyword">const</span><span class="normal"> uint8_t </span><span class="symbol">*)</span><span class="normal"> encrypted</span><span class="symbol">,</span><span class="normal"> data_size</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">uint8_t </span><span class="symbol">*)</span><span class="normal"> decrypted</span><span class="symbol">,</span><span class="normal"> </span><span class="keyword">sizeof</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">decrypted</span><span class="symbol">));</span>
+
+<span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="function">memcmp</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">input</span><span class="symbol">,</span><span class="normal"> decrypted</span><span class="symbol">,</span><span class="normal"> data_size</span><span class="symbol">)</span><span class="normal"> </span><span class="symbol">==</span><span class="normal"> </span><span class="number">0</span><span class="symbol">)</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">    </span><span class="function">printf</span><span class="normal"> </span><span class="symbol">(</span><span class="string">"Correct encryption/decryption process</span><span class="specialchar">\n</span><span class="string">"</span><span class="symbol">);</span>
+<span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<br class="example-break"><div class="refsect3">
+<a name="dukpt-encrypt.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>a <a class="link" href="libdukpt-Key-management.html#dukpt-key-t" title="dukpt_key_t"><span class="type">dukpt_key_t</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>location of the input data to encrypt.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data_size</p></td>
+<td class="parameter_description"><p>size of <em class="parameter"><code>data</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>out</p></td>
+<td class="parameter_description"><p>output location where to store the encrypted data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>out_size</p></td>
+<td class="parameter_description"><p>size of <em class="parameter"><code>out</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="dukpt-decrypt"></a><h3>dukpt_decrypt ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+dukpt_decrypt (<em class="parameter"><code>const <a class="link" href="libdukpt-Key-management.html#dukpt-key-t" title="dukpt_key_t"><span class="type">dukpt_key_t</span></a> *key</code></em>,
+               <em class="parameter"><code>const <span class="type">uint8_t</span> *data</code></em>,
+               <em class="parameter"><code><span class="type">size_t</span> data_size</code></em>,
+               <em class="parameter"><code><span class="type">uint8_t</span> *out</code></em>,
+               <em class="parameter"><code><span class="type">size_t</span> out_size</code></em>);</pre>
+<p>Decrypt <em class="parameter"><code>data</code></em>
+ using <em class="parameter"><code>key</code></em>
+ and store it in <em class="parameter"><code>out</code></em>
+.</p>
+<p>The size of the output decrypted data will be the same as the input
+encrypted one, and therefore <em class="parameter"><code>out_size</code></em>
+ must be at least the same size as
+<em class="parameter"><code>data_size</code></em>
+.</p>
+<p>See <a class="link" href="libdukpt-Encryption-and-decryption.html#dukpt-encrypt" title="dukpt_encrypt ()"><code class="function">dukpt_encrypt()</code></a> for an example on how to use this method.</p>
+<div class="refsect3">
+<a name="dukpt-decrypt.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>a <a class="link" href="libdukpt-Key-management.html#dukpt-key-t" title="dukpt_key_t"><span class="type">dukpt_key_t</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>location of the input data to decrypt.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data_size</p></td>
+<td class="parameter_description"><p>size of <em class="parameter"><code>data</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>out</p></td>
+<td class="parameter_description"><p>output location where to store the decrypted data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>out_size</p></td>
+<td class="parameter_description"><p>size of <em class="parameter"><code>out</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="libdukpt-Encryption-and-decryption.other_details"></a><h2>Types and Values</h2>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25.1</div>
+</body>
+</html>
