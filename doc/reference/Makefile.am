@@ -67,8 +67,6 @@ CLEANFILES += \
 	$(DOC_MODULE).prerequisites \
 	$(DOC_MODULE).signals \
 	$(DOC_MODULE).types \
-	$(DOC_MODULE)-sections.txt \
-	$(DOC_MODULE)-sections.mstamp \
 	*.stamp \
 	-rf xml html tmpl \
 	$(NULL)
