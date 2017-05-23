@@ -3,7 +3,7 @@ AC_PREREQ([2.68])
 
 dnl The dukpt version number
 m4_define([dukpt_major_version], [1])
-m4_define([dukpt_minor_version], [1])
+m4_define([dukpt_minor_version], [2])
 m4_define([dukpt_micro_version], [0])
 m4_define([dukpt_version],
           [dukpt_major_version.dukpt_minor_version.dukpt_micro_version])
