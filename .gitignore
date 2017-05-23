@@ -33,6 +33,7 @@ Makefile.in
 
 /test/dukpt-test
 
+/src/dukpt.h
 /src/dukpt.pc
 
 /doc/reference/*.stamp

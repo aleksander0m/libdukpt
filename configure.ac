@@ -1,7 +1,14 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.68])
 
-AC_INIT([libdukpt], [1.1.0], [aleksander@aleksander.es])
+dnl The dukpt version number
+m4_define([dukpt_major_version], [1])
+m4_define([dukpt_minor_version], [1])
+m4_define([dukpt_micro_version], [0])
+m4_define([dukpt_version],
+          [dukpt_major_version.dukpt_minor_version.dukpt_micro_version])
+
+AC_INIT([libdukpt], [dukpt_version], [aleksander@aleksander.es])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -27,6 +34,16 @@ LT_INIT
 dnl Specific warnings to always use
 LIBDUKPT_COMPILER_WARNINGS
 
+dnl Version stuff
+DUKPT_MAJOR_VERSION=dukpt_major_version
+DUKPT_MINOR_VERSION=dukpt_minor_version
+DUKPT_MICRO_VERSION=dukpt_micro_version
+DUKPT_VERSION=dukpt_version
+AC_SUBST(DUKPT_MAJOR_VERSION)
+AC_SUBST(DUKPT_MINOR_VERSION)
+AC_SUBST(DUKPT_MICRO_VERSION)
+AC_SUBST(DUKPT_VERSION)
+
 dnl Require openssl
 PKG_CHECK_MODULES(OPENSSL, [openssl])
 AC_SUBST(OPENSSL_CFLAGS)
@@ -43,6 +60,7 @@ GTK_DOC_CHECK(1.0)
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
+                 src/dukpt.h
                  src/dukpt.pc
                  test/Makefile
                  doc/Makefile

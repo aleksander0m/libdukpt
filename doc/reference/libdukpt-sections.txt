@@ -17,3 +17,14 @@ dukpt_compute_key
 dukpt_encrypt
 dukpt_decrypt
 </SECTION>
+
+<SECTION>
+<FILE>libdukpt-version</FILE>
+DUKPT_MAJOR_VERSION
+DUKPT_MINOR_VERSION
+DUKPT_MICRO_VERSION
+DUKPT_CHECK_VERSION
+dukpt_get_major_version
+dukpt_get_minor_version
+dukpt_get_micro_version
+</SECTION>

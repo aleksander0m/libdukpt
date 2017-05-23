@@ -20,3 +20,7 @@ libdukpt_la_LDFLAGS = \
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = dukpt.pc
+
+EXTRA_DIST = \
+	dukpt.h.in \
+	$(NULL)

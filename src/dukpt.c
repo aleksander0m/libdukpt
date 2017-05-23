@@ -440,3 +440,24 @@ dukpt_decrypt (const dukpt_key_t *key,
                   (const uint8_t *) key,  DUKPT_KEY_SIZE,
                   out,                    out_size);
 }
+
+/******************************************************************************/
+/* Library version info */
+
+unsigned int
+dukpt_get_major_version (void)
+{
+    return DUKPT_MAJOR_VERSION;
+}
+
+unsigned int
+dukpt_get_minor_version (void)
+{
+    return DUKPT_MINOR_VERSION;
+}
+
+unsigned int
+dukpt_get_micro_version (void)
+{
+    return DUKPT_MICRO_VERSION;
+}

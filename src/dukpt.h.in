@@ -245,4 +245,82 @@ void dukpt_decrypt (const dukpt_key_t *key,
                     uint8_t           *out,
                     size_t             out_size);
 
+/******************************************************************************/
+/* Library version info */
+
+/**
+ * SECTION:libdukpt-version
+ * @title: Library version
+ * @short_description: Methods and types to report library version.
+ *
+ * This section defines the types and methods exposed by the library to report
+ * its own version both at build time and at run time.
+ */
+
+/**
+ * DUKPT_MAJOR_VERSION:
+ *
+ * Evaluates to the major version number of libdukpt which this source
+ * is compiled against.
+ */
+#define DUKPT_MAJOR_VERSION (@DUKPT_MAJOR_VERSION@)
+
+/**
+ * DUKPT_MINOR_VERSION:
+ *
+ * Evaluates to the minor version number of libdukpt which this source
+ * is compiled against.
+ */
+#define DUKPT_MINOR_VERSION (@DUKPT_MINOR_VERSION@)
+
+/**
+ * DUKPT_MICRO_VERSION:
+ *
+ * Evaluates to the micro version number of libdukpt which this source
+ * compiled against.
+ */
+#define DUKPT_MICRO_VERSION (@DUKPT_MICRO_VERSION@)
+
+/**
+ * DUKPT_CHECK_VERSION:
+ * @major: major version (e.g. 1 for version 1.2.5)
+ * @minor: minor version (e.g. 2 for version 1.2.5)
+ * @micro: micro version (e.g. 5 for version 1.2.5)
+ *
+ * Returns: %TRUE if the version of the libdukpt header file
+ * is the same as or newer than the given version.
+ */
+#define DUKPT_CHECK_VERSION(major,minor,micro)				\
+  (DUKPT_MAJOR_VERSION > (major) ||					\
+   (DUKPT_MAJOR_VERSION == (major) && DUKPT_MINOR_VERSION > (minor)) ||	\
+   (DUKPT_MAJOR_VERSION == (major) && DUKPT_MINOR_VERSION == (minor) && DUKPT_MICRO_VERSION >= (micro)))
+
+/**
+ * dukpt_get_major_version:
+ *
+ * Runtime check of the major library version.
+ *
+ * Returns: the major library version.
+ */
+unsigned int dukpt_get_major_version (void);
+
+/**
+ * dukpt_get_minor_version:
+ *
+ * Runtime check of the minor library version.
+ *
+ * Returns: the minor library version.
+ */
+unsigned int dukpt_get_minor_version (void);
+
+/**
+ * dukpt_get_micro_version:
+ *
+ * Runtime check of the micro library version.
+ *
+ * Returns: the micro library version.
+ */
+unsigned int dukpt_get_micro_version (void);
+
+
 #endif /* DUKPT_H */

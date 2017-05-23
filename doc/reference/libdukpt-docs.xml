@@ -46,6 +46,7 @@
     <title>libdukpt</title>
     <xi:include href="xml/libdukpt-keys.xml"/>
     <xi:include href="xml/libdukpt-encdec.xml"/>
+    <xi:include href="xml/libdukpt-version.xml"/>
   </part>
 
   <index>
