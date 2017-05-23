@@ -4,6 +4,7 @@
     <sub name="libdukpt" link="pt01.html">
       <sub name="Key management" link="libdukpt-Key-management.html"/>
       <sub name="Encryption and decryption" link="libdukpt-Encryption-and-decryption.html"/>
+      <sub name="Library version" link="libdukpt-Library-version.html"/>
     </sub>
     <sub name="API Index" link="ix01.html"/>
   </chapters>
@@ -17,6 +18,13 @@
     <keyword type="enum" name="enum dukpt_key_type_t" link="libdukpt-Key-management.html#dukpt-key-type-t"/>
     <keyword type="function" name="dukpt_encrypt ()" link="libdukpt-Encryption-and-decryption.html#dukpt-encrypt"/>
     <keyword type="function" name="dukpt_decrypt ()" link="libdukpt-Encryption-and-decryption.html#dukpt-decrypt"/>
+    <keyword type="macro" name="DUKPT_CHECK_VERSION()" link="libdukpt-Library-version.html#DUKPT-CHECK-VERSION:CAPS"/>
+    <keyword type="function" name="dukpt_get_major_version ()" link="libdukpt-Library-version.html#dukpt-get-major-version"/>
+    <keyword type="function" name="dukpt_get_minor_version ()" link="libdukpt-Library-version.html#dukpt-get-minor-version"/>
+    <keyword type="function" name="dukpt_get_micro_version ()" link="libdukpt-Library-version.html#dukpt-get-micro-version"/>
+    <keyword type="macro" name="DUKPT_MAJOR_VERSION" link="libdukpt-Library-version.html#DUKPT-MAJOR-VERSION:CAPS"/>
+    <keyword type="macro" name="DUKPT_MINOR_VERSION" link="libdukpt-Library-version.html#DUKPT-MINOR-VERSION:CAPS"/>
+    <keyword type="macro" name="DUKPT_MICRO_VERSION" link="libdukpt-Library-version.html#DUKPT-MICRO-VERSION:CAPS"/>
     <keyword type="constant" name="DUKPT_KEY_TYPE_DERIVED" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-DERIVED:CAPS"/>
     <keyword type="constant" name="DUKPT_KEY_TYPE_PIN_ENCRYPTION" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-PIN-ENCRYPTION:CAPS"/>
     <keyword type="constant" name="DUKPT_KEY_TYPE_MAC_REQUEST" link="libdukpt-Key-management.html#DUKPT-KEY-TYPE-MAC-REQUEST:CAPS"/>
